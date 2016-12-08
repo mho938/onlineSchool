@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+        xmlns="http://www.springframework.org/schema/mvc"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+    <beans:import resource="spring/i18n.xml" />
+    <beans:import resource="spring/dbconfig.xml" />
+
+    <annotation-driven></annotation-driven>
+    <default-servlet-handler />
+    <tx:annotation-driven />
+
+    <context:annotation-config />
+
+
+    <!-- the application context definition for the springapp DispatcherServlet -->
+    <!--<context:component-scan base-package="tv.samim.*" />-->
+
+    <context:component-scan base-package="com.iust" />
+
+    <beans:bean id="multipartResolver"
+                class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+        <!-- one of the properties available; the maximum file size in bytes 536870912 -->
+        <beans:property name="maxUploadSize" value="536870912" />
+    </beans:bean>
+
+<!--    <beans:bean id="myUserDetailsService"
+                class="com.iust.common.security.MyUserDetailsService"/>-->
+
+   <!-- <beans:bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <beans:property name="prefix">
+            <beans:value>/WEB-INF/view/</beans:value>
+        </beans:property>
+        <beans:property name="suffix">
+            <beans:value>.jsp</beans:value>
+        </beans:property>
+        <beans:property name="order" value="1" />
+    </beans:bean>-->
+    <beans:bean
+            class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
+
+    <!--<beans:bean
+            class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
+            id="tilesConfigurer">
+        <beans:property name="validateDefinitions" value="false" />
+        <beans:property name="checkRefresh" value="false" />
+        <beans:property name="definitions">
+            <beans:list>
+                <beans:value>/WEB-INF/tiles/tiles-defs.xml</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>-->
+
+</beans:beans>

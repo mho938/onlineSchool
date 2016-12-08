@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - newonlineschool@localhost" uuid="5630996e-e197-4a9e-b62e-756f7f5ea365">
+    <database-info product="MySQL" version="5.5.21" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.4">
+      <schema id="1" name="newonlineschool"/>
+      <table id="2" parent="1" name="tbl_course"/>
+      <table id="3" parent="1" name="tbl_course_students"/>
+      <table id="4" parent="1" name="tbl_membership"/>
+      <table id="5" parent="1" name="tbl_person"/>
+      <table id="6" parent="1" name="tbl_request"/>
+      <table id="7" parent="1" name="tbl_authentication"/>
+      <column id="8" parent="2" name="id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="9" parent="2" name="createDate">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="10" parent="2" name="field">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="11" parent="2" name="grade">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="12" parent="2" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="13" parent="2" name="isvalidate">
+        <mandatory>1</mandatory>
+        <data-type>bit(1)</data-type>
+      </column>
+      <column id="14" parent="2" name="weekcount">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="15" parent="2" name="membership_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <index id="16" parent="2" name="FK_itt2kkkdhc56abss0csakvxt5">
+        <columns>membership_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="17" parent="2" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="18" parent="2" name="FK_itt2kkkdhc56abss0csakvxt5">
+        <columns>membership_id</columns>
+        <ref-key>~.tbl_membership.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="19" parent="3" name="course_id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="20" parent="3" name="student_id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <index id="21" parent="3" name="FK_7pfesm5p8fseuwhlas0xc8hto">
+        <columns>student_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="22" parent="3" name="PRIMARY">
+        <columns>course_id
+student_id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="23" parent="3" name="FK_7pfesm5p8fseuwhlas0xc8hto">
+        <columns>student_id</columns>
+        <ref-key>~.tbl_membership.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="24" parent="3" name="FK_f1jpm3tv8hf11h92xx3okfcq">
+        <columns>course_id</columns>
+        <ref-key>~.tbl_course.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="25" parent="4" name="id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="26" parent="4" name="password">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="27" parent="4" name="role">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="28" parent="4" name="username">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <key id="29" parent="4" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <column id="30" parent="5" name="balance">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="31" parent="5" name="birthDate">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="32" parent="5" name="email">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="33" parent="5" name="family">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="34" parent="5" name="field">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="35" parent="5" name="grade">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="36" parent="5" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="37" parent="5" name="nationalNumber">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="38" parent="5" name="phoneNumber">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="39" parent="5" name="membership_id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <key id="40" parent="5" name="PRIMARY">
+        <columns>membership_id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="41" parent="5" name="FK_jo25pr1f1n990eeg2of97lf70">
+        <columns>membership_id</columns>
+        <ref-key>~.tbl_membership.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="42" parent="6" name="id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="43" parent="6" name="weekcount">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="44" parent="6" name="membership_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="45" parent="6" name="course_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <index id="46" parent="6" name="FK_jn0mx6odnij5p6o6w45wjjhmp">
+        <columns>membership_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="47" parent="6" name="FK_oyxao5366oka4q8pn3sscke7">
+        <columns>course_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="48" parent="6" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="49" parent="6" name="FK_jn0mx6odnij5p6o6w45wjjhmp">
+        <columns>membership_id</columns>
+        <ref-key>~.tbl_membership.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="50" parent="6" name="FK_oyxao5366oka4q8pn3sscke7">
+        <columns>course_id</columns>
+        <ref-key>~.tbl_course.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="51" parent="7" name="id">
+        <mandatory>1</mandatory>
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="52" parent="7" name="sessionid">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="53" parent="7" name="membership_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <index id="54" parent="7" name="FK_d91ifgfj17a8ly56d2rx5npqi">
+        <columns>membership_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="55" parent="7" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="56" parent="7" name="FK_d91ifgfj17a8ly56d2rx5npqi">
+        <columns>membership_id</columns>
+        <ref-key>~.tbl_membership.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+    </database-model>
+  </data-source>
+</component>
