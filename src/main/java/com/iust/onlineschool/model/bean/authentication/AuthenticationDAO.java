@@ -13,7 +13,7 @@ import java.util.List;
 public interface AuthenticationDAO extends _RootDAO<Authentication, Long> {
 
     List<Authentication> getAll();
-    Authentication findBySession(Membership membership, String sessionId);
-    Authentication findBySession(String sessionId);
+    Authentication findBySession(Membership membership, String token);
+    Authentication findBySession(String token);
 
 }

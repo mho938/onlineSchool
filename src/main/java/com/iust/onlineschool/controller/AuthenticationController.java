@@ -6,9 +6,11 @@ import com.iust.onlineschool.enumaration.Field;
 import com.iust.onlineschool.enumaration.Grade;
 import com.iust.onlineschool.enumaration.RoleType;
 
+import com.iust.onlineschool.model.bean.Response;
 import com.iust.onlineschool.model.bean.authentication.Authentication;
 import com.iust.onlineschool.model.bean.authentication.AuthenticationDAO;
 import com.iust.onlineschool.model.bean.authentication.AuthenticationModel;
+import com.iust.onlineschool.model.bean.authentication.LoginAnswere;
 import com.iust.onlineschool.model.bean.course.Course;
 import com.iust.onlineschool.model.bean.membership.Membership;
 import com.iust.onlineschool.model.bean.membership.MembershipDAO;
@@ -17,6 +19,7 @@ import com.iust.onlineschool.model.bean.person.Person;
 import com.iust.onlineschool.model.bean.person.PersonDAO;
 import com.iust.onlineschool.utility.PathUtility;
 import com.kendoui.spring.models.DataSourceResult;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,29 +59,23 @@ public class AuthenticationController {
     @Autowired
     private PersonDAO persons;
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    @ResponseBody
-    public String employee(Model model, HttpServletRequest request) {
-        //System.out.println(UserDetail.getCurrentUser(request).getUsername());
-        return "login";
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String loginGet(@RequestBody String user, HttpServletRequest request)
+    public LoginAnswere loginGet(@RequestBody String user, HttpServletRequest request)
             throws IOException {
-
+        LoginAnswere loginAnswere = null;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String userJson = gson.toJson(user);
         AuthenticationModel member = gson.fromJson(user, AuthenticationModel.class);
-        Membership existMember = memberships.findByUserName(member.getUsername(),member.getPassword());
+        Membership existMember = memberships.findByUserName(member.getUsername(), member.getPassword());
         Authentication mymember = null;
-        if (existMember!=null && existMember.getId()>0){
-            if (member.getSessionId()!=null) {
+        if (existMember != null && existMember.getId() > 0) {
+            if (member.getSessionId() != null) {
                 mymember = authentications.findBySession(existMember, member.getSessionId());
-                return member.getSessionId();
-            }
-            else {
+                loginAnswere = new LoginAnswere(member.getSessionId(), member.getRole().name());
+                return loginAnswere;
+            } else {
                 Authentication authentication = new Authentication();
                 authentication.setId(0);
                 authentication.setMembership(existMember);
@@ -88,28 +85,35 @@ public class AuthenticationController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return authentication.getSessionId();
+                try {
+                    loginAnswere = new LoginAnswere(authentication.getSessionId(), authentication.getMembership().getRole().name());
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                return loginAnswere;
             }
-        }
-        else {
-            return "error";
+        } else {
+            loginAnswere = new LoginAnswere(null, null);
+            return loginAnswere;
         }
 
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST, produces = "application/json")
     @CrossOrigin
-    public  @ResponseBody Person signUp(@RequestBody PersonModel personModel, HttpServletResponse response, HttpServletRequest request) {
-        Person person =null;
+    public
+    @ResponseBody
+    Person signUp(@RequestBody PersonModel personModel, HttpServletResponse response, HttpServletRequest request) {
+        Person person = null;
         DataSourceResult dsr = new DataSourceResult();
         try {
             boolean userExist = true;//memberships.isUsernameExist(personModel.getUsername());
             if (!userExist) {
-                person = new Person(personModel.getName(),personModel.getFamily()
-                                            ,personModel.getBalance(),personModel.getEmail(),
-                                            personModel.getPhoneNumber(),personModel.getNationalNumber()
-                                            ,personModel.getBirthDate(), Field.valueOf(personModel.getField()),
-                                            Grade.valueOf(personModel.getGrade()));
+                person = new Person(personModel.getName(), personModel.getFamily()
+                        , personModel.getBalance(), personModel.getEmail(),
+                        personModel.getPhoneNumber(), personModel.getNationalNumber()
+                        , personModel.getBirthDate(), Field.valueOf(personModel.getField()),
+                        Grade.valueOf(personModel.getGrade()));
                 person.setUsername(personModel.getUsername());
                 person.setPassword(personModel.getPassword());
                 person.setRole(RoleType.valueOf(personModel.getRole()));
@@ -123,94 +127,20 @@ public class AuthenticationController {
         dsr.setData(membershipArrayList);
         return person;
     }
-    @RequestMapping(value = "/about", method = RequestMethod.GET)
-    public String about(HttpServletResponse response, HttpServletRequest request)
-            throws IOException {
-        return "about";
-    }
 
-    @RequestMapping(value = "/addPerson",
-            method = RequestMethod.POST,
-            headers = {"Content-type=application/json"})
+    @RequestMapping(value = "/signout", method = RequestMethod.POST)
     @ResponseBody
-    public String addPerson(@RequestBody Person person) {
-        System.out.println(person.toString());
-        return "";
-    }
-
-    @RequestMapping(value = "/authentication", method = RequestMethod.GET)
-    public void login(HttpServletRequest request,
-                      HttpServletResponse response,
-                      Map<String, Object> model) throws IOException {
-        String serverId = request.getParameter("serverId");
-        String sessionId = request.getParameter("sid");
-        String home = request.getParameter("home");
-        String lang = request.getParameter("lang");
-        localeResolver.setLocale(request, response, new Locale(lang));
-        if (home != null) {
-            home = URLDecoder.decode(home, "UTF-8");
-        } /*else {
-            home = Config.i().getWelcomeRoot();
-        }*/
-       /* if (sessionId != null && sessionId.length() > 0) {
-            tv.samim.tools.url.UrlCaller.jsonFix = true;
-            tv.samim.tools.url.UrlAnswer<AuthenticationResult> res = tv.samim.tools.url.UrlCaller
-                    .call(AuthenticationResult.class,
-                            UrlCaller.ResponseType.json, sessionId, home
-                                    + "/authentication");
-
-            if (res != null && res.getResult().getStatus().equals("fail")) {
-                model.put("showMsg", true);
-                model.put("message", res.getResult().getText());// -can not
-                // welcome
-                model.put("status", "error");
-                response.sendRedirect(PathUtility.buildRedirectUrlToHomePage(request, response));
-                return;
-            }
-
-            if (res != null && res.getResult().isAthenticate()) {
-                List<Groups> authority = res.getResult().getGroups();
-                String userRoles = "ROLE_USER";
-                if (authority != null) {
-                    for (Groups groups : authority) {
-                        List<Roles> roles = groups.getRoles();
-                        if (roles != null)
-                            for (Roles rol : roles) {
-                                userRoles = rol.getName() + "," + userRoles;
-                            }
-                    }
-                }
-                List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(userRoles);
-                CurrentUser u = new CurrentUser(-1l, res.getResult().getUsername(), "******",
-                        true, serverId, sessionId,
-                        home,
-                        localeResolver.resolveLocale(request),
-                        auth);
-                UsernamePasswordAuthenticationToken loggedIn = new UsernamePasswordAuthenticationToken(
-                        u, u.getPassword(), u.getAuthorities());
-                loggedIn.setDetails(u);
-                SecurityContextHolder.getContext().setAuthentication(loggedIn);
-
-                response.sendRedirect(PathUtility.buildRedirectUrlToHomePage(request, response));
-                return;
-            }
-
-            response.sendRedirect(PathUtility.buildRedirectUrlToHomePage(
-                    request, response));
-            return;
-        }*/
-        response.sendRedirect( "index");
-
-    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    @ResponseBody
-    public String signUp(@RequestBody String sessionId, HttpServletRequest request)
+    public Response signUp(@RequestBody AuthenticationModel authenticationModel, HttpServletRequest request)
             throws IOException {
-
-        Authentication authentication = authentications.findBySession(sessionId);
-        authentications.delete(authentication);
-        return "ok";
+        if (authenticationModel.getSessionId() != "" && authenticationModel.getSessionId() != null) {
+            Authentication authentication = authentications.findBySession(authenticationModel.getSessionId());
+            if (authentication!=null) {
+                authentications.delete(authentication);
+                return new Response("ok");
+            }
+            else
+                return new Response("error!!");
+        }
+        return new Response("error!!");
     }
-
 }
