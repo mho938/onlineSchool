@@ -1,4 +1,4 @@
-package com.iust.onlineschool.model.bean.membership;
+package com.iust.onlineschool.model.bean.person;
 
 import com.iust.onlineschool.enumaration.Field;
 import com.iust.onlineschool.enumaration.Grade;
@@ -11,7 +11,7 @@ public class PersonModel {
     private     long            id;
     private     String          username;
     private     String          password;
-    private     String        role;
+    private     String          role;
     private     String          name;
     private     String          family;
     private     long            balance;
@@ -19,8 +19,8 @@ public class PersonModel {
     private     long            phoneNumber;
     private     long            nationalNumber;
     private     long            birthDate;
-    private     String           field;
-    private     String           grade;
+    private     String          field;
+    private     String          grade;
 
     public long getId() {
         return id;

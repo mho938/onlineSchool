@@ -4,20 +4,20 @@ package com.iust.onlineschool.model.bean.authentication;
  * Created by Mohsen on 12/8/2016.
  */
 public class LoginAnswere {
-    private     String      token;
+    private     String      sessionId;
     private     String      role;
 
-    public LoginAnswere(String token, String role) {
-        this.token = token;
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public LoginAnswere(String role, String sessionId) {
         this.role = role;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+        this.sessionId = sessionId;
     }
 
     public String getRole() {

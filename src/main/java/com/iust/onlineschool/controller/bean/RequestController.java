@@ -39,11 +39,9 @@ public class RequestController {
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     @ResponseBody
-    public DataSourceResult read() {
-        DataSourceResult dsr = new DataSourceResult();
-        List<Request> result = requests.getAll();
-        dsr.setData(result);
-        return dsr;
+    public List<Course> read() {
+        List<Course> result = courses.getAll();
+        return result;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
