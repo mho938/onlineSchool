@@ -11,4 +11,5 @@ import java.util.List;
 public interface CourseDAO extends _RootDAO<Course, Long> {
 
     List<Course> getAll();
+    List<Course> getAllBySearch(String key);
 }

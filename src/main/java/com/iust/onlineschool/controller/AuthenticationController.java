@@ -43,7 +43,6 @@ public class AuthenticationController {
             throws IOException {
         LoginAnswere loginAnswere = null;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String userJson = gson.toJson(user);
         AuthenticationModel member = gson.fromJson(user, AuthenticationModel.class);
         Membership existMember = memberships.findByUserName(member.getUsername(), member.getPassword());
         Authentication mymember = null;
@@ -80,9 +79,8 @@ public class AuthenticationController {
     @CrossOrigin
     public
     @ResponseBody
-    Person signUp(@RequestBody PersonModel personModel, HttpServletResponse response, HttpServletRequest request) {
+    PersonModel signUp(@RequestBody PersonModel personModel, HttpServletResponse response, HttpServletRequest request) {
         Person person = null;
-        DataSourceResult dsr = new DataSourceResult();
         try {
             boolean userExist = memberships.isUsernameExist(personModel.getUsername());
             if (!userExist) {
@@ -95,14 +93,25 @@ public class AuthenticationController {
                 person.setPassword(personModel.getPassword());
                 person.setRole(RoleType.valueOf(personModel.getRole()));
                 persons.saveOrUpdate(person);
+                PersonModel answere = new PersonModel();
+                answere.setRole(person.getRole().name());
+                answere.setUsername(person.getUsername());
+                return answere;
+            }
+            else{
+                Membership m = memberships.findByUserName(personModel.getUsername());
+                PersonModel answere = new PersonModel();
+                answere.setRole(m.getRole().name());
+                answere.setUsername(m.getUsername());
+                return answere;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ArrayList<Person> membershipArrayList = new ArrayList<Person>();
-        membershipArrayList.add(person);
-        dsr.setData(membershipArrayList);
-        return person;
+        PersonModel answere = new PersonModel();
+        answere.setRole("");
+        answere.setUsername("");
+        return answere;
     }
 
     @RequestMapping(value = "/signout", method = RequestMethod.POST)

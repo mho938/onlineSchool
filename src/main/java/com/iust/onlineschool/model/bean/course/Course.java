@@ -1,5 +1,6 @@
 package com.iust.onlineschool.model.bean.course;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iust.onlineschool.enumaration.Field;
 import com.iust.onlineschool.enumaration.Grade;
 import com.iust.onlineschool.model.bean.membership.Membership;
@@ -25,6 +26,9 @@ public class Course {
     private     Grade               grade;
     private     int                 weekCount;
     private     String              name;
+
+    public Course() {
+    }
 
     public Course(Membership teacher, long createDate, boolean validate, Field field, Grade grade, int weekCount, String name) {
         this.teacher = teacher;
@@ -59,6 +63,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name="membership_id")
+    @JsonIgnore
     public Membership getTeacher() {
         return teacher;
     }
@@ -67,11 +72,12 @@ public class Course {
         this.teacher = teacher;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "tbl_course_students", joinColumns = {
             @JoinColumn(name = "course_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "student_id",
                     nullable = false, updatable = false) })
+    @JsonIgnore
     public Set<Membership> getStudents() {
         return students;
     }
@@ -128,7 +134,8 @@ public class Course {
         this.weekCount = weekCount;
     }
 
-    @OneToMany(mappedBy="course")
+    @OneToMany(mappedBy="course",fetch = FetchType.EAGER)
+    @JsonIgnore
     public Set<Request> getRequests() {
         return requests;
     }

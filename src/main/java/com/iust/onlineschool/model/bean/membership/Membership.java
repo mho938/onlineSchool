@@ -1,6 +1,8 @@
 package com.iust.onlineschool.model.bean.membership;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iust.onlineschool.enumaration.RoleType;
 import com.iust.onlineschool.model.bean.authentication.Authentication;
@@ -10,6 +12,8 @@ import com.iust.onlineschool.model.bean.request.Request;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * Created by mohsen.oloumi on 28/02/2016.
@@ -22,10 +26,10 @@ public class Membership {
     private     String          username;
     private     String          password;
     private     RoleType        role;
-    private     Set<Authentication>  authentication = new HashSet<Authentication>();
-    private     Set<Course>     teachers = new HashSet<Course>();
-    private     Set<Request>    requests = new HashSet<Request>();
-    private     Set<Course>     students = new HashSet<Course>();
+    private transient      Set<Authentication>  authentication = new HashSet<Authentication>();
+    private transient      Set<Course>     teachers = new HashSet<Course>();
+    private transient      Set<Request>    requests = new HashSet<Request>();
+    //private transient      Set<Course>     students = new HashSet<Course>();
 
     public Membership() {
     }
@@ -52,6 +56,7 @@ public class Membership {
     @Basic
     @Column(name = "password", nullable = false, insertable = true, updatable = true)
     @JsonIgnoreProperties("password")
+    @JsonIgnore
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
@@ -59,27 +64,27 @@ public class Membership {
     public RoleType getRole() { return role; }
     public void setRole(RoleType role) { this.role = role; }
 
-    @OneToMany(mappedBy="teacher")
-    @JsonIgnore
-    public Set<Course> getTeachers() {
+    @OneToMany(mappedBy="teacher",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("teachers")
+     public Set<Course> getTeachers() {
         return teachers;
     }
 
     public void setTeachers(Set<Course> teachers) {
         this.teachers = teachers;
     }
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "students")
-    @JsonIgnore
+/*
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "students")
+    @JsonIgnoreProperties("students")
     public Set<Course> getStudents() {
         return students;
-    }
-
+    }*/
+/*
     public void setStudents(Set<Course> students) {
         this.students = students;
-    }
-    @OneToMany(mappedBy="applicant")
-    @JsonIgnore
+    }*/
+    @OneToMany(fetch = FetchType.EAGER,mappedBy="applicant")
+    @JsonIgnoreProperties("requests")
     public Set<Request> getRequests() {
         return requests;
     }
@@ -91,7 +96,8 @@ public class Membership {
     public void setAuthentication(Set<Authentication> authentication) {
         this.authentication = authentication;
     }
-    @OneToMany(mappedBy="membership")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy="membership")
+    @JsonIgnoreProperties("authentication")
     public Set<Authentication> getAuthentication() {
         return authentication;
     }
