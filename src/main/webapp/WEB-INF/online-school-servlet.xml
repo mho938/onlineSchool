@@ -48,7 +48,7 @@
     <beans:bean
             class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
 
-    <!--<beans:bean
+    <beans:bean
             class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
             id="tilesConfigurer">
         <beans:property name="validateDefinitions" value="false" />
@@ -58,6 +58,6 @@
                 <beans:value>/WEB-INF/tiles/tiles-defs.xml</beans:value>
             </beans:list>
         </beans:property>
-    </beans:bean>-->
+    </beans:bean>
 
 </beans:beans>
