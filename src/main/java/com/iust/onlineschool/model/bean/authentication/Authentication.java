@@ -1,5 +1,6 @@
 package com.iust.onlineschool.model.bean.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iust.onlineschool.model.bean.membership.Membership;
 
 import javax.persistence.*;
@@ -38,6 +39,7 @@ public class Authentication {
 
     @ManyToOne
     @JoinColumn(name="membership_id")
+    @JsonIgnore
     public Membership getMembership() {
         return membership;
     }

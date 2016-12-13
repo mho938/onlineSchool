@@ -26,10 +26,7 @@ public class Membership {
     private     String          username;
     private     String          password;
     private     RoleType        role;
-    private transient      Set<Authentication>  authentication = new HashSet<Authentication>();
-    private transient      Set<Course>     teachers = new HashSet<Course>();
-    private transient      Set<Request>    requests = new HashSet<Request>();
-    //private transient      Set<Course>     students = new HashSet<Course>();
+    private transient      Set<Course>     courses = new HashSet<Course>();
 
     public Membership() {
     }
@@ -64,41 +61,19 @@ public class Membership {
     public RoleType getRole() { return role; }
     public void setRole(RoleType role) { this.role = role; }
 
-    @OneToMany(mappedBy="teacher",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JsonIgnoreProperties("teachers")
-     public Set<Course> getTeachers() {
-        return teachers;
+
+
+    //@ManyToMany(fetch = FetchType.EAGER, mappedBy = "students")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "tbl_course_students", joinColumns = {
+            @JoinColumn(name = "course_id", nullable = false, updatable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "student_id",
+                    nullable = false, updatable = false) })
+    public Set<Course> getCourses() {
+        return courses;
     }
 
-    public void setTeachers(Set<Course> teachers) {
-        this.teachers = teachers;
-    }
-/*
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "students")
-    @JsonIgnoreProperties("students")
-    public Set<Course> getStudents() {
-        return students;
-    }*/
-/*
-    public void setStudents(Set<Course> students) {
-        this.students = students;
-    }*/
-    @OneToMany(fetch = FetchType.EAGER,mappedBy="applicant")
-    @JsonIgnoreProperties("requests")
-    public Set<Request> getRequests() {
-        return requests;
-    }
-
-    public void setRequests(Set<Request> requests) {
-        this.requests = requests;
-    }
-
-    public void setAuthentication(Set<Authentication> authentication) {
-        this.authentication = authentication;
-    }
-    @OneToMany(fetch = FetchType.EAGER,mappedBy="membership")
-    @JsonIgnoreProperties("authentication")
-    public Set<Authentication> getAuthentication() {
-        return authentication;
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

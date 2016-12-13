@@ -13,6 +13,8 @@ import com.iust.onlineschool.model.bean.course.CourseDAO;
 import com.iust.onlineschool.model.bean.course.CourseModel;
 import com.iust.onlineschool.model.bean.membership.Membership;
 import com.iust.onlineschool.model.bean.membership.MembershipDAO;
+import com.iust.onlineschool.model.bean.person.Person;
+import com.iust.onlineschool.model.bean.person.PersonDAO;
 import com.kendoui.spring.models.DataSourceResult;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -41,6 +43,8 @@ public class CourseController {
     AuthenticationDAO authentications;
     @Autowired
     MembershipDAO memberships;
+    @Autowired
+    PersonDAO persons;
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     @ResponseBody
@@ -104,22 +108,45 @@ public class CourseController {
     }
 
     @RequestMapping(value = "/addcourse", method = RequestMethod.POST, produces = "application/json")
-    public DataSourceResult addCourse(@RequestBody CourseModel course, HttpServletRequest request) throws Exception {
+    @ResponseBody
+    public Response addCourse(@RequestBody CourseModel course, HttpServletRequest request) throws Exception {
         Authentication authentication;
+        Membership m = null;
+        Course c = null;
         if (course!=null && course.getSessionId()!=null && course.getSessionId()!=""){
             Authentication strudent = authentications.findBySession(course.getSessionId());
-            Membership m = memberships.findByUserName(strudent.getMembership().getUsername());
-            Course c = courses.findById(course.getId());
-            c.getStudents().add(m);
-            //c.setId(0);
+            if (strudent!=null && strudent.getMembership().getUsername()!=null)
+                m = memberships.findByUserName(strudent.getMembership().getUsername());
+            if (course.getId()!=0)
+                c = courses.findById(course.getId());
+            if (c!=null) {
+                boolean exist=false;
+                for (Course course1 : m.getCourses()) {
+                    if (course1.getId()==c.getId())
+                    {
+                        exist=true;
+                        m.getCourses().remove(course1);
+                        m.getCourses().add(c);
+                        break;
+                    }
+                }
+                if (!exist) {
+                    Person p =persons.findById(m.getId());
+                    p.setBalance(p.getBalance()-c.getBalance());
+                    p.getCourses().add(c);
+                    persons.saveOrUpdate(p);
+                    return new Response("ok");
+                }
+            }
             try {
-                courses.saveOrUpdate(c);
+                memberships.saveOrUpdate(m);
+                return new Response("ok");
             }catch (Exception e)
             {
-                System.out.println(e);
+                return new Response("Error!");
             }
         }
-        return null;
+        return new Response("Error !");
     }
 
     public RoleType isAuthenticated(String sessionId) {

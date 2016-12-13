@@ -29,6 +29,9 @@ public class Person extends Membership{
         super(username, password, role);
     }
 
+    public Person() {
+    }
+
     public Person(String name, String family, long balance, String email, long phoneNumber, long nationalNumber, long birthDate, Field field, Grade grade) {
         this.name = name;
         this.family = family;

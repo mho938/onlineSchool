@@ -18,7 +18,6 @@ import java.util.Set;
 public class Course {
     private     long                id;
     private     Membership          teacher;
-    private     Set<Membership>     students = new HashSet<Membership>();
     private     Set<Request>        requests = new HashSet<Request>();
     private     long                createDate;
     private     boolean             validate;
@@ -26,6 +25,8 @@ public class Course {
     private     Grade               grade;
     private     int                 weekCount;
     private     String              name;
+    private     long                balance;
+
 
     public Course() {
     }
@@ -70,20 +71,6 @@ public class Course {
 
     public void setTeacher(Membership teacher) {
         this.teacher = teacher;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "tbl_course_students", joinColumns = {
-            @JoinColumn(name = "course_id", nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "student_id",
-                    nullable = false, updatable = false) })
-    @JsonIgnore
-    public Set<Membership> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Membership> students) {
-        this.students = students;
     }
 
     @Basic
@@ -143,4 +130,15 @@ public class Course {
     public void setRequests(Set<Request> requests) {
         this.requests = requests;
     }
+
+    @Basic
+    @Column(name = "balance", nullable = false, insertable = true, updatable = true)
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
 }

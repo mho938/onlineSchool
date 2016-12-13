@@ -19,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -36,6 +38,12 @@ public class RequestController {
     AuthenticationDAO authentications;
     @Autowired
     CourseDAO courses;
+
+    @RequestMapping(value = { "/home", "/" })
+    public String showHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        return "request";
+    }
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     @ResponseBody

@@ -18,8 +18,10 @@ import com.iust.onlineschool.model.bean.person.Person;
 import com.iust.onlineschool.model.bean.person.PersonDAO;
 import com.kendoui.spring.models.DataSourceResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +38,55 @@ public class AuthenticationController {
     @Autowired
     private PersonDAO persons;
 
+    @RequestMapping(value = {"/" })
+    public ModelAndView showHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ModelAndView result = new ModelAndView("login");
+        result.addObject("status", false);
+        return result;
+    }
 
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ModelAndView login1(@RequestParam("username") String username ,@RequestParam("password") String password , HttpServletRequest request)
+            throws IOException {
+        ModelAndView result = new ModelAndView("login");
+
+        Membership existMember = null;
+        try {
+            existMember = memberships.findByUserName(username,password);
+        }catch (Exception e ) {
+            result.addObject("status", false);
+            return result;
+        }
+        if (existMember != null && existMember.getId() > 0) {
+            if (existMember.getRole() == RoleType.valueOf("admin")) {
+                Authentication authentication = authentications.findBySession(request.getSession().getId());
+                if (authentication == null) {
+                    authentication = new Authentication();
+                    authentication.setId(0);
+                    authentication.setMembership(existMember);
+                    authentication.setSessionId(request.getSession().getId());
+                }
+                try {
+                    authentications.saveOrUpdate(authentication);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                result = new ModelAndView("request");
+                result.addObject("status", true);
+                result.addObject("sessionId", authentication.getSessionId());
+                return result;
+
+            } else {
+                result.addObject("status", false);
+                return result;
+            }
+        }
+        else {
+            result.addObject("status", false);
+            return result;
+        }
+
+    }
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public LoginAnswere login(@RequestBody String user, HttpServletRequest request)
@@ -44,7 +94,13 @@ public class AuthenticationController {
         LoginAnswere loginAnswere = null;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         AuthenticationModel member = gson.fromJson(user, AuthenticationModel.class);
-        Membership existMember = memberships.findByUserName(member.getUsername(), member.getPassword());
+        Membership existMember = null;
+        try {
+            existMember = memberships.findByUserName(member.getUsername(), member.getPassword());
+        }catch (Exception e ) {
+            loginAnswere = new LoginAnswere(null, null);
+            return loginAnswere;
+        }
         Authentication mymember = null;
         if (existMember != null && existMember.getId() > 0) {
             if (member.getSessionId() != null) {
@@ -52,10 +108,14 @@ public class AuthenticationController {
                 loginAnswere = new LoginAnswere(mymember.getMembership().getRole().name(),mymember.getSessionId());
                 return loginAnswere;
             } else {
-                Authentication authentication = new Authentication();
-                authentication.setId(0);
-                authentication.setMembership(existMember);
-                authentication.setSessionId(request.getSession().getId());
+
+                Authentication authentication = authentications.findBySession(request.getSession().getId());
+                if (authentication==null) {
+                    authentication=new Authentication();
+                    authentication.setId(0);
+                    authentication.setMembership(existMember);
+                    authentication.setSessionId(request.getSession().getId());
+                }
                 try {
                     authentications.saveOrUpdate(authentication);
                 } catch (Exception e) {
@@ -100,6 +160,16 @@ public class AuthenticationController {
             }
             else{
                 Membership m = memberships.findByUserName(personModel.getUsername());
+                person = new Person(personModel.getName(), personModel.getFamily()
+                        , personModel.getBalance(), personModel.getEmail(),
+                        personModel.getPhoneNumber(), personModel.getNationalNumber()
+                        , personModel.getBirthDate(), Field.valueOf(personModel.getField()),
+                        Grade.valueOf(personModel.getGrade()));
+                person.setUsername(personModel.getUsername());
+                person.setPassword(personModel.getPassword());
+                person.setRole(RoleType.valueOf(personModel.getRole()));
+                person.setId(personModel.getId());
+                persons.saveOrUpdate(person);
                 PersonModel answere = new PersonModel();
                 answere.setRole(m.getRole().name());
                 answere.setUsername(m.getUsername());
@@ -116,7 +186,7 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/signout", method = RequestMethod.POST)
     @ResponseBody
-    public Response signUp(@RequestBody AuthenticationModel authenticationModel, HttpServletRequest request)
+    public Response signout(@RequestBody AuthenticationModel authenticationModel, HttpServletRequest request)
             throws IOException {
         if (authenticationModel.getSessionId() != "" && authenticationModel.getSessionId() != null) {
             Authentication authentication = authentications.findBySession(authenticationModel.getSessionId());
@@ -128,5 +198,22 @@ public class AuthenticationController {
                 return new Response("error!!");
         }
         return new Response("error!!");
+    }
+    @RequestMapping(value = "/adminsignout", method = RequestMethod.POST)
+    @ResponseBody
+    public Response adminsignout(@RequestBody AuthenticationModel authenticationModel, HttpServletRequest request)
+            throws IOException {
+
+        if (authenticationModel.getSessionId() != "" && authenticationModel.getSessionId() != null) {
+            Authentication authentication = authentications.findBySession(authenticationModel.getSessionId());
+            if (authentication!=null) {
+                authentications.delete(authentication);
+                return new Response("ok");
+            }
+            else {
+                return new Response("error");
+            }
+        }
+        return new Response("error");
     }
 }
