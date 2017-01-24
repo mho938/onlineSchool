@@ -14,8 +14,8 @@
 
 
 	<definition name="request" extends="defaultTemplate">
-		<put-attribute name="head" value="/WEB-INF/views/about/head.jsp" />
-		<put-attribute name="content" value="/WEB-INF/views/about/index.jsp" />
+		<put-attribute name="head" value="/WEB-INF/views/request/head.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/request/index.jsp" />
 	</definition>
 
 	<definition name="login" extends="defaultTemplate">

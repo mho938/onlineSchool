@@ -114,8 +114,7 @@
          role="navigation">
         <div class="container-fluid">
             <ul class="secondary-menu nav navbar-nav">
-                <tiles:insertAttribute name="status"/>
-
+                    <tiles:insertAttribute name="status"/>
                 <li class="nav">
                     <img class="mainLogo"
                            <%-- <%if (!Config.i().isStandalone()) {%>

@@ -24,7 +24,7 @@
 <div class="collapse navbar-collapse" id="main-header">
 	<ul class="main-menu nav navbar-nav main-header">
 		<li class="nav"><a href="<%=home%>" style="padding: 17px 15px;">
-				<i class="fa fa-home fa-lg"></i>
+		s		<i class="fa fa-home fa-lg"></i>
 		</a></li>
 
 		<%
