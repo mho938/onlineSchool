@@ -1,0 +1,38 @@
+.k-ext-information, .k-ext-question, .k-ext-warning, .k-ext-error {
+	overflow: visible;
+	width: 32px;
+	height: 32px;
+	background-color: transparent;
+	margin: 0;
+	font-size: 40px!important;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.k-ext-information,
+.k-ext-question {
+	color: #3A62C9;
+}
+
+.k-ext-warning {
+	color: #EFC400;
+}
+
+.k-ext-error {
+	color: #A80A0A;
+} 
+#extMessageBox span.k-window-title {
+    direction: ltr
+}
+#extMessageBox .k-ext-error {
+    position:absolute;
+    left:12px;
+    top:12px;
+}
+#extMessageBox .k-ext-text {
+    display:inline-block;
+    margin-left:45px;
+    margin-top:12px;
+    float:left;
+}

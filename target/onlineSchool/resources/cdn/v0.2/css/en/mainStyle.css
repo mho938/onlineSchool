@@ -1,0 +1,15 @@
+.k-icon.k-edit {
+    transform: scale(-1, 1);
+}
+.k-warning.k-icon {
+    padding-top: 1px;
+}
+.float-direction {
+    float: left!important;
+}
+.pull-btn {
+    float: right;
+}
+.k-zoom-control {
+    direction: ltr;
+}

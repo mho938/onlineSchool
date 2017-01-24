@@ -1,0 +1,172 @@
+@font-face{ 
+    font-family:'AdobeArabic';
+    src:url('../fonts/AdobeArabic-Regular.eot');/* IE6-IE8 */
+    src:url('../fonts/AdobeArabic-Regular.eot?#iefix') format('embedded-opentype'),/* IE9 Compat Modes */
+        url('../fonts/AdobeArabic-Regular.ttf') format('truetype'),/* Safari, Android, iOS */
+        url('../fonts/AdobeArabic-Regular.svg?v=4.1.0#adobearabicregular') format('svg');
+}
+
+body {
+    background: url('../images/back/bg.png') repeat scroll left top transparent;
+}
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family:AdobeArabic;
+    font-size:20px;
+}
+
+.navbar-nav > li > span,
+.navbar-nav > li > a {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.secondary-menu {
+    float: right !important;
+}
+
+.mainLogo {
+    height: 60px;
+    width: 310px;
+}
+
+#mainPanel {
+    margin-top: 60px;
+    padding: 36px;
+    background: url("../images/back/ci_line.gif") repeat-x scroll left top #F3F3F3;
+    box-shadow: 0 0 10px #999999 !important;
+    -moz-box-shadow: 0px 0px 10px #999999 !important; /* for Firefox 3.5+ */
+    -webkit-box-shadow: 0px 0px 10px #999999 !important; /* for Safari and Chrome */
+    filter: progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=145, Strength=2) !important;
+}
+
+.footer {
+    margin-top: 40px;
+    color: #808080;
+    font-size: 20px;
+}
+
+.footer i.fa-samim {
+    color: #BCBCBC;
+    font-size: 40px;
+    padding: 0px 5px;
+}
+
+.navbar-default .navbar-nav > .dropdown > a .caret,
+.navbar-default .navbar-nav > .dropdown > a:hover .caret,
+.navbar-default .navbar-nav > .dropdown > a:focus .caret,
+.navbar-default .navbar-nav > li > a > .caret {
+    border-top-color: #DAD3BB;
+
+}
+
+#main-header {
+    overflow-x: hidden;
+}
+
+.k-window * {
+    font-size: 16px;
+}
+
+.tooltip {
+    font-size: 16px;
+}
+
+.dropdown{
+    text-align: center;
+}
+ul.nav li.dropdown:hover ul.dropdown-menu{ display: block; }
+
+.k-grid-DeleteItem span,
+.k-grid-Delete span {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: 400;
+    height: 16px;
+    line-height: 0.7;
+    overflow: hidden;
+    text-align: center;
+    width: 16px;
+    vertical-align: middle;
+    opacity:0.8;
+}
+
+.k-rtl .k-button-icontext.k-grid-DeleteItem span,
+.k-rtl .k-button-icontext.k-grid-Delete span {
+    margin-left: 0.5rem;
+    margin-right: 0rem;
+}
+
+.k-grid-DeleteItem span:before,
+.k-grid-Delete span:before {
+    content: "\f00d";
+}
+
+.lang {
+    margin: 9px 10px;
+    cursor: pointer;
+}
+
+header .container-fluid {
+    padding: 0px;
+}
+
+.k-input-place textarea[readonly],
+.k-input-place input[readonly] {
+    background-color: #f2f2f2;
+    color: #6d6d6d;
+}
+
+.chart-wrapper {
+    direction: ltr;
+}
+
+.text-ltr {
+    direction: ltr;
+}
+
+.k-map-controls {
+    direction: ltr;
+}
+
+.breadcrumb .active a {
+    color: #357ebd;
+}
+
+.k-input-place textarea,
+.k-input-place input {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #c5c5c5;
+    font-family: inherit;
+    font-size: 100%;
+    background-color: #fff;
+    color: #2e2e2e;
+    padding: 0.25em 5px;
+    border-radius: 3px;
+}
+
+.k-grid-excel-btn span {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    opacity: 0.8;
+    background-repeat: no-repeat;
+    display: inline-block;
+    font-size: 14px;
+    height: 16px;
+    line-height: 15px;
+    overflow: hidden;
+    text-align: center;
+    width: 16px;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    vertical-align: middle;
+    color: #524644;
+}
+
+.k-grid-excel-btn span:before {
+    content: "\f1c3";
+}
