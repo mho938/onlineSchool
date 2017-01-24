@@ -31,5 +31,10 @@ public class CourseImpl extends _RootImpl<Course, Long> implements CourseDAO {
         return c2.add(Restrictions.ilike("name",key, MatchMode.ANYWHERE)).list();
     }
 
+    @Override
+    public void deleteCourse(Course course) {
+
+    }
+
 
 }

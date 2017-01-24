@@ -12,4 +12,5 @@ public interface CourseDAO extends _RootDAO<Course, Long> {
 
     List<Course> getAll();
     List<Course> getAllBySearch(String key);
+    void deleteCourse(Course course);
 }

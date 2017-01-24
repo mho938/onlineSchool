@@ -1,10 +1,10 @@
 package com.iust.onlineschool.controller.bean;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.iust.onlineschool.enumaration.Field;
 import com.iust.onlineschool.enumaration.Grade;
 import com.iust.onlineschool.enumaration.RoleType;
+import com.iust.onlineschool.model.bean.Enums;
+import com.iust.onlineschool.model.bean.GradeModel;
 import com.iust.onlineschool.model.bean.Response;
 import com.iust.onlineschool.model.bean.authentication.Authentication;
 import com.iust.onlineschool.model.bean.authentication.AuthenticationDAO;
@@ -16,18 +16,16 @@ import com.iust.onlineschool.model.bean.membership.MembershipDAO;
 import com.iust.onlineschool.model.bean.person.Person;
 import com.iust.onlineschool.model.bean.person.PersonDAO;
 import com.kendoui.spring.models.DataSourceResult;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Type;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
 /**
  * Created by Mohsen on 11/7/2016.
@@ -51,6 +49,18 @@ public class CourseController {
     public List<Course> read() {
         List<Course> result = courses.getAll();
         return result;
+    }
+    @RequestMapping(value = { "/grade" }, method = { RequestMethod.POST }, produces = { "application/json" })
+    @ResponseBody
+    public DataSourceResult readGrade() {
+        DataSourceResult dsr = new DataSourceResult();
+        ArrayList grades= new ArrayList();
+        for (Grade g:Grade.values()
+                ) {
+            grades.add(new GradeModel(g.name(),g.ordinal()));
+        }
+        dsr.setData(grades);
+        return dsr;
     }
 
     @RequestMapping(value = "/search")
@@ -147,6 +157,25 @@ public class CourseController {
             }
         }
         return new Response("Error !");
+    }
+
+    @RequestMapping(value = { "/fields" }, method = { RequestMethod.GET }, produces = { "application/json" })
+    @ResponseBody
+    public Set<Enums> fields() {
+        Set<Enums>fields= new HashSet();
+        for (int i = 0; i <Field.values().length ; i++) {
+            fields.add(new Enums(Field.values()[i].name(),i));
+        }
+        return fields;
+    }
+    @RequestMapping(value = { "/grades" }, method = { RequestMethod.GET }, produces = { "application/json" })
+    @ResponseBody
+    public Set<Enums> grades() {
+        Set<Enums>grades= new HashSet();
+        for (int i = 0; i <Grade.values().length ; i++) {
+            grades.add(new Enums(Grade.values()[i].name(),i));
+        }
+        return grades;
     }
 
     public RoleType isAuthenticated(String sessionId) {

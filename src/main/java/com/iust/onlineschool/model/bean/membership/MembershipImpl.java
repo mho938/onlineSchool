@@ -1,7 +1,12 @@
 package com.iust.onlineschool.model.bean.membership;
 
+import com.iust.onlineschool.enumaration.RoleType;
+import com.iust.onlineschool.model.bean.course.Course;
 import com.iust.onlineschool.model.bean.root._RootImpl;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,5 +57,11 @@ public class MembershipImpl extends _RootImpl<Membership, Long> implements Membe
                         "WHERE              m.username = :un")
                 .setParameter("un", username)
                 .uniqueResult());
+    }
+
+    @Override
+    public List<Membership> getAllTeachers() {
+        Criteria c2 = getSession().createCriteria(Membership.class);
+        return c2.add(Restrictions.eq("role", RoleType.teacher)).list();
     }
 }

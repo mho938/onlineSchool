@@ -16,4 +16,5 @@ public interface MembershipDAO extends _RootDAO<Membership, Long> {
 
     Membership findByUserName(String username, String password);
     Membership findByUserName(String username);
+    List<Membership> getAllTeachers();
 }

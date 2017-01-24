@@ -12,5 +12,6 @@ import com.iust.onlineschool.utility.enumaration.FieldDeserializer;
 @JsonSerialize(using = EnumSerializer.class)
 @JsonDeserialize(using = FieldDeserializer.class)
 public enum Field {
-    computerScience
+    computerScience,
+    mathematic
 }

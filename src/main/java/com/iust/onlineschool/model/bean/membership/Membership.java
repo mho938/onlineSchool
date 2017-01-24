@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * Created by mohsen.oloumi on 28/02/2016.
@@ -64,11 +66,13 @@ public class Membership {
 
 
     //@ManyToMany(fetch = FetchType.EAGER, mappedBy = "students")
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade(value = { CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     @JoinTable(name = "tbl_course_students", joinColumns = {
             @JoinColumn(name = "course_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "student_id",
                     nullable = false, updatable = false) })
+
     public Set<Course> getCourses() {
         return courses;
     }

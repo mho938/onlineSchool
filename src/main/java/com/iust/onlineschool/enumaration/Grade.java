@@ -12,5 +12,7 @@ import com.iust.onlineschool.utility.enumaration.GradeDeserializer;
 @JsonSerialize(using = EnumSerializer.class)
 @JsonDeserialize(using = GradeDeserializer.class)
 public enum Grade {
-    bachelor
+    bachelor,
+    master,
+    phd
 }

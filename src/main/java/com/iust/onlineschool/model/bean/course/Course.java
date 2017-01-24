@@ -25,6 +25,8 @@ public class Course {
     private     Grade               grade;
     private     int                 weekCount;
     private     String              name;
+    private     String              imagePath;
+    private     String              description;
     private     long                balance;
 
 
@@ -60,6 +62,26 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Basic
+    @Column(name = "description", nullable = false, insertable = true, updatable = true)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Basic
+    @Column(name = "imagePath", nullable = false, insertable = true, updatable = true)
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @ManyToOne
